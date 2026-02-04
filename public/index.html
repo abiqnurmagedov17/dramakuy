@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DRAMAKUY - Streaming Dracin</title>
+
+  <!-- React CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Archivo+Black&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #000000;
+      --secondary: #FFFFFF;
+      --accent: #FF3B30;
+      --highlight: #00D4FF;
+      --surface: #F5F5F5;
+      --border: #000000;
+      --shadow: 8px 8px 0px #000000;
+      --shadow-sm: 4px 4px 0px #000000;
+      --radius: 0px;
+      --transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * { 
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--primary);
+      line-height: 1.4;
+      overflow-x: hidden;
+      min-height: 100vh;
+      border: 3px solid var(--border);
+      position: relative;
+      background-image: 
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(0, 0, 0, 0.03) 10px,
+          rgba(0, 0, 0, 0.03) 20px
+        );
+    }
+
+    body::before {
+      content: "DRAMA";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 40vw;
+      font-weight: 900;
+      color: rgba(0, 0, 0, 0.02);
+      z-index: -1;
+      font-family: 'Archivo Black', sans-serif;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    #root {
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Header Styles - Neo Brutalism */
+    header {
+      background: var(--secondary);
+      padding: 15px 25px;
+      border-bottom: 3px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow-sm);
+      margin: 3px;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1400px;
+      margin: 0 auto;
+      gap: 20px;
+    }
+
+    .logo {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      background: var(--accent);
+      padding: 8px 16px;
+      border: 3px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .logo:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--border);
+    }
+
+    .logo i {
+      font-size: 24px;
+      color: var(--secondary);
+    }
+
+    /* Navigation */
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 5px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+    }
+
+    .nav-buttons::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .nav-buttons::-webkit-scrollbar-track {
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .nav-buttons::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border: 1px solid var(--border);
+    }
+
+    .nav-btn {
+      background: var(--secondary);
+      border: 2px solid var(--border);
+      color: var(--primary);
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-btn:hover {
+      background: var(--highlight);
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-btn.active {
+      background: var(--accent);
+      color: var(--secondary);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+
+    .nav-btn.active::after {
+      content: "▶";
+      position: absolute;
+      right: 8px;
+      font-size: 10px;
+    }
+
+    /* Search */
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      padding: 8px 15px;
+      flex: 1;
+      max-width: 450px;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-container:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent);
+      transform: translate(-2px, -2px);
+    }
+
+    .search-container input {
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      padding: 0 15px;
+      font-size: 16px;
+      width: 100%;
+      outline: none;
+      font-weight: 500;
+    }
+
+    .search-container input::placeholder {
+      color: var(--primary);
+      opacity: 0.5;
+      font-weight: 500;
+    }
+
+    .search-btn {
+      background: var(--accent);
+      border: 2px solid var(--border);
+      color: var(--secondary);
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 14px;
+    }
+
+    .search-btn:hover {
+      background: var(--highlight);
+      color: var(--primary);
+      transform: translate(-1px, -1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 30px 25px;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 48px;
+      margin: 0 0 40px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -2px;
+      position: relative;
+      display: inline-block;
+      padding: 10px 20px;
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      box-shadow: var(--shadow);
+      transform: rotate(-1deg);
+    }
+
+    .section-title .highlight {
+      color: var(--accent);
+      position: relative;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+      }
+    }
+
+    /* Card Styles - Neo Brutalism */
+    .card {
+      cursor: pointer;
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      position: relative;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      transform-style: preserve-3d;
+    }
+
+    .card:hover {
+      transform: translate(-8px, -8px) rotate(-1deg);
+      box-shadow: 12px 12px 0px var(--border);
+      z-index: 10;
+    }
+
+    .card::before {
+      content: "WATCH";
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      background: var(--accent);
+      color: var(--secondary);
+      padding: 4px 8px;
+      font-size: 10px;
+      font-weight: 900;
+      border: 2px solid var(--border);
+      z-index: 2;
+    }
+
+    .card-img-container {
+      width: 100%;
+      aspect-ratio: 2/3;
+      overflow: hidden;
+      position: relative;
+      border-bottom: 3px solid var(--border);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .card-img {
+      transform: scale(1.05);
+    }
+
+    .card-content {
+      padding: 15px;
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .card-rating {
+      background: var(--primary);
+      color: var(--secondary);
+      padding: 2px 6px;
+      border: 1px solid var(--border);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 0;
+      gap: 20px;
+    }
+
+    .pagination button {
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      color: var(--primary);
+      padding: 12px 25px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pagination button:hover:not(:disabled) {
+      background: var(--highlight);
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0px var(--border);
+    }
+
+    .pagination button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .page-indicator {
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      padding: 12px 30px;
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .page-indicator .current-page {
+      color: var(--accent);
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    /* Detail View */
+    .detail-container {
+      padding: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+      animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .detail-header {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 40px;
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .detail-header::before {
+      content: "NOW PLAYING";
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background: var(--accent);
+      color: var(--secondary);
+      padding: 5px 15px;
+      font-size: 12px;
+      font-weight: 900;
+      border: 2px solid var(--border);
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+      .detail-header {
+        flex-direction: column;
+      }
+    }
+
+    .detail-poster {
+      width: 300px;
+      border: 3px solid var(--border);
+      box-shadow: var(--shadow);
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .detail-poster {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+      }
+    }
+
+    .detail-info {
+      flex: 1;
+    }
+
+    .detail-title {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 15px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: -2px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .detail-title::after {
+      content: "";
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: var(--highlight);
+      z-index: -1;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .detail-title {
+        font-size: 36px;
+      }
+    }
+
+    .detail-meta {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .detail-tag {
+      background: var(--primary);
+      color: var(--secondary);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 2px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-intro {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+
+    .detail-stats {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+
+    .stat-item i {
+      color: var(--accent);
+      font-size: 20px;
+    }
+
+    /* Video Player */
+    .video-container {
+      margin-bottom: 40px;
+      border: 3px solid var(--border);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-container::before {
+      content: "LIVE";
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--accent);
+      color: var(--secondary);
+      padding: 5px 10px;
+      font-size: 10px;
+      font-weight: 900;
+      border: 2px solid var(--border);
+      z-index: 2;
+      letter-spacing: 1px;
+    }
+
+    .video-controls {
+      background: var(--secondary);
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-top: 3px solid var(--border);
+    }
+
+    .quality-selector {
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      color: var(--primary);
+      padding: 10px 20px;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+      min-width: 150px;
+      transition: var(--transition);
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .quality-selector:hover {
+      border-color: var(--accent);
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--border);
+    }
+
+    .quality-selector option {
+      background: var(--secondary);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .quality-info {
+      font-size: 14px;
+      background: var(--primary);
+      color: var(--secondary);
+      padding: 8px 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 2px solid var(--border);
+    }
+
+    .quality-info i {
+      color: var(--highlight);
+    }
+
+    .episode-nav {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .episode-btn {
+      background: var(--accent);
+      color: var(--secondary);
+      border: 3px solid var(--border);
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .episode-btn:hover:not(:disabled) {
+      background: var(--highlight);
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0px var(--border);
+    }
+
+    .episode-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .current-episode {
+      font-weight: 700;
+      font-size: 16px;
+      background: var(--secondary);
+      padding: 10px 20px;
+      border: 3px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+
+    /* Episodes List */
+    .episodes-container {
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .episodes-container::before {
+      content: "EPISODES";
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background: var(--highlight);
+      color: var(--primary);
+      padding: 5px 15px;
+      font-size: 12px;
+      font-weight: 900;
+      border: 2px solid var(--border);
+      letter-spacing: 1px;
+    }
+
+    .episodes-title {
+      font-size: 32px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+    }
+
+    .episodes-title i {
+      color: var(--accent);
+    }
+
+    .episodes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .episodes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+    }
+
+    .episode-btn-list {
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      color: var(--primary);
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .episode-btn-list:hover {
+      background: var(--highlight);
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0px var(--border);
+    }
+
+    .episode-btn-list.active {
+      background: var(--accent);
+      color: var(--secondary);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .episode-btn-list.active::before {
+      content: "▶";
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 10px;
+    }
+
+    /* Back Button */
+    .back-btn {
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      color: var(--primary);
+      padding: 12px 25px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .back-btn:hover {
+      background: var(--highlight);
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0px var(--border);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary);
+      color: var(--secondary);
+      padding: 40px 25px 30px;
+      margin-top: 50px;
+      border-top: 3px solid var(--border);
+      position: relative;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .footer-logo {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: uppercase;
+    }
+
+    .footer-info {
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.8;
+      max-width: 800px;
+      opacity: 0.8;
+    }
+
+    .footer-creator {
+      color: var(--highlight);
+      font-weight: 700;
+      margin-top: 5px;
+      display: inline-block;
+      padding: 5px 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid var(--highlight);
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      width: 100%;
+      opacity: 0.6;
+    }
+
+    /* Modal Ketentuan */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      padding: 40px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 12px 12px 0px var(--border);
+      position: relative;
+      animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-header {
+      margin-bottom: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .modal-title {
+      font-size: 32px;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+    }
+
+    .modal-subtitle {
+      color: var(--primary);
+      font-size: 16px;
+      opacity: 0.7;
+      font-weight: 500;
+    }
+
+    .modal-body {
+      margin-bottom: 30px;
+    }
+
+    .terms-list {
+      list-style-type: none;
+      margin-bottom: 25px;
+    }
+
+    .terms-list li {
+      padding: 12px 0;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .terms-list li:last-child {
+      border-bottom: none;
+    }
+
+    .terms-list i {
+      color: var(--accent);
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    .terms-note {
+      background: var(--highlight);
+      border: 3px solid var(--border);
+      padding: 20px;
+      margin-top: 25px;
+      position: relative;
+    }
+
+    .terms-note p {
+      color: var(--primary);
+      font-size: 15px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .modal-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 15px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .checkbox-container:hover {
+      background: var(--highlight);
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--accent);
+      border: 2px solid var(--border);
+    }
+
+    .checkbox-label {
+      color: var(--primary);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 16px;
+      border-radius: 0;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 16px;
+      border: 3px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+
+    .modal-btn.accept {
+      background: var(--accent);
+      color: var(--secondary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .modal-btn.accept:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0px var(--border);
+    }
+
+    .modal-btn.cancel {
+      background: var(--secondary);
+      color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .modal-btn.cancel:hover {
+      background: var(--highlight);
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0px var(--border);
+    }
+
+    /* Loading Effect */
+    .loading {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: var(--secondary);
+      padding: 15px 25px;
+      font-size: 14px;
+      z-index: 3000;
+      border: 3px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      animation: toastSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), toastFadeOut 0.3s ease-out 1.7s forwards;
+    }
+
+    @keyframes toastSlideUp {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    @keyframes toastFadeOut {
+      to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+      }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--surface);
+      border: 2px solid var(--border);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border: 2px solid var(--border);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--highlight);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .header-container {
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      
+      .logo {
+        font-size: 26px;
+      }
+      
+      .search-container {
+        order: 3;
+        max-width: 100%;
+        margin: 0;
+      }
+      
+      .nav-buttons {
+        order: 2;
+        flex: 1;
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .modal-content {
+        padding: 25px;
+      }
+      
+      .modal-title {
+        font-size: 24px;
+      }
+      
+      .modal-actions {
+        flex-direction: column;
+      }
+      
+      .video-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .quality-selector {
+        width: 100%;
+      }
+      
+      /* Disable some effects on mobile for performance */
+      .card:hover {
+        transform: translate(-4px, -4px);
+        box-shadow: 8px 8px 0px var(--border);
+      }
+      
+      .section-title {
+        font-size: 36px;
+      }
+      
+      /* Toast di mobile */
+      .toast {
+        width: 90%;
+        max-width: 300px;
+        text-align: center;
+      }
+    }
+
+    /* Brutal Animation for Cards */
+    @keyframes cardAppear {
+      from {
+        opacity: 0;
+        transform: translateY(20px) rotate(-5deg);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) rotate(0);
+      }
+    }
+
+    .card {
+      animation: cardAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      opacity: 0;
+    }
+
+    .card:nth-child(2) { animation-delay: 0.05s; }
+    .card:nth-child(3) { animation-delay: 0.1s; }
+    .card:nth-child(4) { animation-delay: 0.15s; }
+    .card:nth-child(5) { animation-delay: 0.2s; }
+    .card:nth-child(6) { animation-delay: 0.25s; }
+    .card:nth-child(7) { animation-delay: 0.3s; }
+    .card:nth-child(8) { animation-delay: 0.35s; }
+    .card:nth-child(9) { animation-delay: 0.4s; }
+    .card:nth-child(10) { animation-delay: 0.45s; }
+  </style>
+</head>
+
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo } = React;
+
+function getCover(d) {
+  return d.coverWap || d.cover || d.bookCover || d.coverUrl || "";
+}
+
+function App() {
+  const [section, setSection] = useState("trending");
+  const [page, setPage] = useState(1);
+  const [list, setList] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [episodes, setEpisodes] = useState([]);
+  const [currentEp, setCurrentEp] = useState(0);
+  const [qualities, setQualities] = useState([]);
+  const [videoSrc, setVideoSrc] = useState("");
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [dontShowAgain, setDontShowAgain] = useState(false);
+  const [preferredQuality, setPreferredQuality] = useState(720);
+  const [currentQuality, setCurrentQuality] = useState(720);
+  const [toast, setToast] = useState("");
+  
+  const videoRef = useRef();
+  const lastTimeRef = useRef(0);
+  const cacheRef = useRef({});
+
+  function showToast(msg) {
+    setToast(msg);
+    setTimeout(() => setToast(""), 2000);
+  }
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [section, page]);
+
+  useEffect(() => {
+    const savedTerms = localStorage.getItem('dramakuy_terms_accepted');
+    if (!savedTerms) {
+      setTimeout(() => {
+        setShowModal(true);
+      }, 1000);
+    }
+    
+    const savedQuality = localStorage.getItem('dramakuy_preferred_quality');
+    if (savedQuality) {
+      setPreferredQuality(Number(savedQuality));
+      setCurrentQuality(Number(savedQuality));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('dramakuy_preferred_quality', preferredQuality.toString());
+  }, [preferredQuality]);
+
+  function fetchList() {
+    const key = `${section}-${page}`;
+
+    if (cacheRef.current[key]) {
+      setList(cacheRef.current[key]);
+      return;
+    }
+
+    setLoading(true);
+    setSelected(null);
+
+    // PERUBAHAN: Ganti endpoint dengan /api/
+    fetch(`/api/${section}?page=${page}`)
+      .then(r => r.json())
+      .then(j => {
+        cacheRef.current[key] = j.data || [];
+        setList(j.data || []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    fetchList();
+  }, [section, page]);
+
+  function search() {
+    if (!query) return;
+    setLoading(true);
+    setPage(1);
+    // PERUBAHAN: Ganti endpoint dengan /api/
+    fetch(`/api/search?query=${encodeURIComponent(query)}&page=1`)
+      .then(r => r.json())
+      .then(j => {
+        setList(j.data || []);
+        setLoading(false);
+        showToast(`Ditemukan ${j.data?.length || 0} drama`);
+      })
+      .catch(() => setLoading(false));
+  }
+
+  function openDetail(d) {
+    setSelected(d);
+    setEpisodes([]);
+    setVideoSrc("");
+
+    // PERUBAHAN: Ganti endpoint dengan /api/
+    fetch(`/api/allepisode?bookId=${d.bookId}`)
+      .then(r => r.json())
+      .then(j => {
+        setEpisodes(j.data || []);
+        if (j.data?.length) playEpisode(j.data, 0);
+      });
+  }
+
+  function playEpisode(epList, index) {
+    const ep = epList[index];
+    setCurrentEp(index);
+
+    const cdn = ep.cdnList.find(c => c.isDefault === 1) || ep.cdnList[0];
+    const videos = cdn.videoPathList;
+    setQualities(videos);
+
+    let video =
+      videos.find(v => v.quality === preferredQuality) ||
+      videos.find(v => v.quality === 720) ||
+      videos[0];
+
+    setVideoSrc(video.videoPath);
+    setCurrentQuality(video.quality);
+    
+    lastTimeRef.current = 0;
+    
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.load();
+      videoRef.current.play().catch(() => {});
+    }
+    
+    showToast(`Episode ${index + 1} dari ${epList.length}`);
+  }
+
+  function changeQuality(url) {
+    const q = qualities.find(v => v.videoPath === url);
+    if (!q || !videoRef.current) return;
+
+    const video = videoRef.current;
+    const currentTime = video.currentTime || 0;
+
+    setPreferredQuality(q.quality);
+    setCurrentQuality(q.quality);
+    setVideoSrc(q.videoPath);
+
+    video.muted = false;
+
+    const restoreTime = () => {
+      video.currentTime = currentTime;
+      video.play().catch(() => {});
+      video.removeEventListener("loadedmetadata", restoreTime);
+    };
+
+    video.addEventListener("loadedmetadata", restoreTime);
+
+    showToast(`Kualitas ${q.quality}p`);
+  }
+
+  function nextEpisode() {
+    if (currentEp + 1 < episodes.length) {
+      playEpisode(episodes, currentEp + 1);
+      showToast(`Lanjut ke Episode ${currentEp + 2}`);
+    } else {
+      showToast("Ini episode terakhir");
+    }
+  }
+
+  function prevEpisode() {
+    if (currentEp > 0) {
+      playEpisode(episodes, currentEp - 1);
+    }
+  }
+
+  function handleAcceptTerms() {
+    if (dontShowAgain) {
+      localStorage.setItem('dramakuy_terms_accepted', 'true');
+    }
+    setShowModal(false);
+  }
+
+  function handleCancel() {
+    if (!dontShowAgain) {
+      alert("Anda harus menyetujui ketentuan penggunaan untuk melanjutkan.");
+      return;
+    }
+    setShowModal(false);
+  }
+
+  const sectionNames = useMemo(() => ({
+    trending: "Trending",
+    foryou: "Untuk Kamu",
+    vip: "VIP",
+    latest: "Terbaru",
+    dubindo: "Dub Indo"
+  }), []);
+
+  const getVideoPathForQuality = (qualityNum) => {
+    const qualityObj = qualities.find(v => v.quality === qualityNum);
+    return qualityObj ? qualityObj.videoPath : videoSrc;
+  };
+
+  return (
+    <>
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2 className="modal-title">
+                <i className="fas fa-exclamation-triangle"></i>
+                Ketentuan Penggunaan
+              </h2>
+              <p className="modal-subtitle">Sebelum menggunakan DramaKuy, harap baca ketentuan berikut:</p>
+            </div>
+            
+            <div className="modal-body">
+              <ul className="terms-list">
+                <li>
+                  <i className="fas fa-info-circle"></i>
+                  <span>Website ini menggunakan API dari penyedia konten pihak ketiga untuk menampilkan drama.</span>
+                </li>
+                <li>
+                  <i className="fas fa-film"></i>
+                  <span>Semua konten yang ditampilkan merupakan hak cipta dari pemilik masing-masing.</span>
+                </li>
+                <li>
+                  <i className="fas fa-user-shield"></i>
+                  <span>Website ini hanya sebagai agregator/penghubung dan tidak menyimpan file video secara langsung.</span>
+                </li>
+                <li>
+                  <i className="fas fa-gavel"></i>
+                  <span>Pengguna bertanggung jawab penuh atas penggunaan website ini sesuai hukum yang berlaku.</span>
+                </li>
+                <li>
+                  <i className="fas fa-video"></i>
+                  <span>Kualitas video tergantung dari sumber yang tersedia di server penyedia konten.</span>
+                </li>
+              </ul>
+              
+              <div className="terms-note">
+                <p>
+                  <i className="fas fa-exclamation-circle" style={{marginRight: "10px"}}></i>
+                  Dengan melanjutkan, Anda menyetujui bahwa Anda akan menggunakan website ini hanya untuk tujuan pribadi dan non-komersial.
+                </p>
+              </div>
+            </div>
+            
+            <div className="modal-footer">
+              <div className="checkbox-container" onClick={() => setDontShowAgain(!dontShowAgain)}>
+                <input 
+                  type="checkbox" 
+                  id="dontShowAgain" 
+                  checked={dontShowAgain}
+                  onChange={() => setDontShowAgain(!dontShowAgain)}
+                />
+                <label htmlFor="dontShowAgain" className="checkbox-label">
+                  Jangan tampilkan lagi saat masuk ke website
+                </label>
+              </div>
+              
+              <div className="modal-actions">
+                <button className="modal-btn cancel" onClick={handleCancel}>
+                  Batal
+                </button>
+                <button className="modal-btn accept" onClick={handleAcceptTerms}>
+                  Setuju & Lanjutkan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <header>
+        <div className="header-container">
+          <div className="logo">
+            <i className="fas fa-play"></i>
+            DRAMAKUY
+          </div>
+          
+          <div className="nav-buttons">
+            {["trending","foryou","vip","latest","dubindo"].map(s => (
+              <button 
+                key={s} 
+                className={`nav-btn ${section === s ? 'active' : ''}`}
+                onClick={() => {
+                  setSection(s); 
+                  setPage(1);
+                  showToast(`Membuka ${sectionNames[s]}`);
+                }}
+              >
+                {sectionNames[s]}
+              </button>
+            ))}
+          </div>
+          
+          <div className="search-container">
+            <i className="fas fa-search"></i>
+            <input
+              placeholder="Cari drama favoritmu..."
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              onKeyDown={e => e.key==="Enter" && search()}
+            />
+            <button className="search-btn" onClick={search}>
+              <i className="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="main-content">
+        {!selected ? (
+          <>
+            <h2 className="section-title">
+              {section === "trending" ? (
+                "🔥 Trending Sekarang"
+              ) : (
+                <>
+                  {sectionNames[section]} <span className="highlight">Drama</span>
+                </>
+              )}
+            </h2>
+            
+            <div className="grid">
+              {!loading && list.map((d, index) => (
+                <div className="card" key={d.bookId} onClick={() => openDetail(d)}>
+                  <div className="card-img-container">
+                    <img className="card-img" src={getCover(d)} alt={d.bookName} />
+                  </div>
+                  <div className="card-content">
+                    <div className="card-title">{d.bookName}</div>
+                    <div className="card-meta">
+                      <span>Drama</span>
+                      <span className="card-rating">
+                        <i className="fas fa-star"></i> {d.rating || "8.5"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {section !== "trending" && (
+              <div className="pagination">
+                <button
+                  onClick={() => {
+                    if (page > 1) {
+                      setPage(page - 1);
+                      showToast(`Halaman ${page - 1}`);
+                    }
+                  }}
+                  disabled={page === 1 || loading}
+                >
+                  <i className="fas fa-chevron-left"></i> Sebelumnya
+                </button>
+
+                <div className="page-indicator">
+                  Halaman <span className="current-page">{page}</span>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setPage(page + 1);
+                    showToast(`Halaman ${page + 1}`);
+                  }}
+                  disabled={loading}
+                >
+                  Selanjutnya <i className="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            )}
+            
+            {loading && (
+              <div style={{textAlign: "center", padding: "50px"}}>
+                <div className="loading" style={{margin: "0 auto"}}></div>
+                <p style={{marginTop: "15px", opacity: 0.7, fontWeight: 700}}>Memuat drama...</p>
+              </div>
+            )}
+            
+            {!loading && list.length === 0 && (
+              <div style={{textAlign: "center", padding: "50px", opacity: 0.7}}>
+                <i className="fas fa-film" style={{fontSize: "50px", marginBottom: "20px", opacity: 0.5}}></i>
+                <h3 style={{marginBottom: "10px", fontWeight: 900}}>Tidak ada drama ditemukan</h3>
+                <p style={{fontWeight: 500}}>Coba cari dengan kata kunci yang berbeda</p>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="detail-container">
+            <button className="back-btn" onClick={() => setSelected(null)}>
+              <i className="fas fa-arrow-left"></i> Kembali ke Beranda
+            </button>
+            
+            <div className="detail-header">
+              <img className="detail-poster" src={getCover(selected)} alt={selected.bookName} />
+              <div className="detail-info">
+                <h1 className="detail-title">{selected.bookName}</h1>
+                
+                <div className="detail-meta">
+                  <span className="detail-tag">Drama</span>
+                  <span className="detail-tag">Romantis</span>
+                  <span className="detail-tag">Episode: {episodes.length}</span>
+                  {selected.genre && <span className="detail-tag">{selected.genre}</span>}
+                </div>
+                
+                <p className="detail-intro">{selected.introduction || "Drama seru dengan cerita yang menarik dan penuh emosi. Tonton sekarang juga!"}</p>
+                
+                <div className="detail-stats">
+                  <div className="stat-item">
+                    <i className="fas fa-star"></i>
+                    <span>Rating: {selected.rating || "8.5"}/10</span>
+                  </div>
+                  <div className="stat-item">
+                    <i className="fas fa-eye"></i>
+                    <span>Ditonton: {selected.views || "1.2M"}x</span>
+                  </div>
+                  <div className="stat-item">
+                    <i className="fas fa-clock"></i>
+                    <span>Durasi: {selected.duration || "45m"}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="video-container">
+              <video
+                ref={videoRef}
+                src={videoSrc}
+                controls
+                muted
+                autoPlay
+                playsInline
+                preload="metadata"
+                onEnded={nextEpisode}
+                onTimeUpdate={() => {
+                  if (videoRef.current) {
+                    lastTimeRef.current = videoRef.current.currentTime;
+                  }
+                }}
+                style={{width: "100%", display: "block"}}
+              />
+              
+              <div className="video-controls">
+                <div className="quality-controls">
+                  <div style={{display: "flex", gap: "15px", alignItems: "center", flexWrap: "wrap"}}>
+                    <select 
+                      className="quality-selector"
+                      value={getVideoPathForQuality(preferredQuality)}
+                      onChange={e => changeQuality(e.target.value)}
+                    >
+                      {qualities.map(v => (
+                        <option key={v.quality} value={v.videoPath}>
+                          Kualitas {v.quality}p
+                        </option>
+                      ))}
+                    </select>
+                    
+                    <div className="quality-info">
+                      <i className="fas fa-hd"></i>
+                      <span>Kualitas saat ini: {currentQuality}p</span>
+                      {currentQuality !== preferredQuality && (
+                        <span style={{opacity: 0.8, fontSize: "12px", marginLeft: "8px"}}>
+                          (Preferensi: {preferredQuality}p tidak tersedia)
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="episode-nav">
+                  <button 
+                    className="episode-btn"
+                    onClick={prevEpisode}
+                    disabled={currentEp === 0}
+                    title="Episode Sebelumnya"
+                  >
+                    <i className="fas fa-backward"></i>
+                  </button>
+                  
+                  <div className="current-episode">
+                    Episode {currentEp + 1} dari {episodes.length}
+                  </div>
+                  
+                  <button 
+                    className="episode-btn"
+                    onClick={nextEpisode}
+                    disabled={currentEp === episodes.length - 1}
+                    title="Episode Selanjutnya"
+                  >
+                    <i className="fas fa-forward"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="episodes-container">
+              <h3 className="episodes-title">
+                <i className="fas fa-list"></i> Daftar Episode
+              </h3>
+              
+              <div className="episodes-grid">
+                {episodes.map((ep,i) => (
+                  <button 
+                    key={ep.chapterId} 
+                    className={`episode-btn-list ${currentEp === i ? 'active' : ''}`}
+                    onClick={() => {
+                      playEpisode(episodes,i);
+                      showToast(`Episode ${i + 1}`);
+                    }}
+                    title={`Episode ${i+1}: ${ep.chapterName || ''}`}
+                  >
+                    Ep {i+1}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <footer>
+        <div className="footer-content">
+          <div className="footer-logo">
+            <i className="fas fa-play"></i>
+            DRAMAKUY
+          </div>
+          
+          <div className="footer-info">
+            <p>
+              DramaKuy adalah platform streaming drama online yang menyediakan berbagai koleksi drama dari berbagai negara dengan kualitas terbaik.
+              <br />
+              Website ini menggunakan API dari penyedia konten pihak ketiga.
+            </p>
+            <div className="footer-creator">
+              <i className="fas fa-code"></i> Website dibuat ❤️ oleh: Kangzhyro17_
+            </div>
+          </div>
+          
+          <div className="footer-copyright">
+            © 2026 DramaKuy. All rights reserved. | Konten hak cipta milik pemilik masing-masing.
+          </div>
+        </div>
+      </footer>
+
+      {toast && (
+        <div className="toast">
+          <i className="fas fa-info-circle"></i>
+          {toast}
+        </div>
+      )}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
