@@ -85,7 +85,6 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: var(--shadow-sm);
       margin: 3px;
     }
 
@@ -96,6 +95,25 @@
       max-width: 1400px;
       margin: 0 auto;
       gap: 20px;
+    }
+
+    .menu-btn {
+      background: var(--accent);
+      border: 3px solid var(--border);
+      color: white;
+      width: 45px;
+      height: 45px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .menu-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-sm);
     }
 
     .logo {
@@ -111,7 +129,6 @@
       background: var(--accent);
       padding: 8px 16px;
       border: 3px solid var(--border);
-      box-shadow: var(--shadow-sm);
       transition: var(--transition);
     }
 
@@ -125,63 +142,130 @@
       color: var(--secondary);
     }
 
-    /* Navigation */
-    .nav-buttons {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 5px;
-      background: var(--surface);
-      border: 2px solid var(--border);
-    }
-
-    .nav-buttons::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    .nav-buttons::-webkit-scrollbar-track {
-      background: var(--surface);
-      border: 1px solid var(--border);
-    }
-
-    .nav-buttons::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border: 1px solid var(--border);
-    }
-
-    .nav-btn {
+    /* Sidebar - Shadow Hitam Dihapus */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100vh;
       background: var(--secondary);
+      border-right: 3px solid var(--border);
+      padding: 20px;
+      z-index: 2000;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 900;
+      margin-bottom: 30px;
+      font-size: 24px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--border);
+    }
+
+    .sidebar-header button {
+      background: var(--accent);
       border: 2px solid var(--border);
-      color: var(--primary);
-      padding: 10px 20px;
-      font-size: 14px;
+      color: white;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-item {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 10px;
+      border: 3px solid var(--border);
+      background: var(--secondary);
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .sidebar-item:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sidebar-item.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Resume Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      padding: 20px;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      background: var(--secondary);
+      border: 3px solid var(--border);
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 12px 12px 0px var(--border);
+      animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-content h2 {
+      margin-bottom: 15px;
+      font-size: 24px;
+    }
+
+    .modal-content p {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .modal-btn {
+      padding: 12px 24px;
+      margin-right: 10px;
+      border: 3px solid var(--border);
       font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
-      white-space: nowrap;
-      flex-shrink: 0;
-      text-transform: uppercase;
-      letter-spacing: -0.5px;
     }
 
-    .nav-btn:hover {
-      background: var(--highlight);
+    .modal-btn.accept {
+      background: var(--accent);
+      color: white;
+    }
+
+    .modal-btn.cancel {
+      background: var(--secondary);
+      color: var(--primary);
+    }
+
+    .modal-btn:hover {
       transform: translate(-2px, -2px);
       box-shadow: var(--shadow-sm);
-    }
-
-    .nav-btn.active {
-      background: var(--accent);
-      color: var(--secondary);
-      box-shadow: var(--shadow-sm);
-      position: relative;
-    }
-
-    .nav-btn.active::after {
-      content: "▶";
-      position: absolute;
-      right: 8px;
-      font-size: 10px;
     }
 
     /* Search */
@@ -194,7 +278,6 @@
       flex: 1;
       max-width: 450px;
       transition: var(--transition);
-      box-shadow: var(--shadow-sm);
     }
 
     .search-container:focus-within {
@@ -299,7 +382,6 @@
       border: 3px solid var(--border);
       position: relative;
       transition: var(--transition);
-      box-shadow: var(--shadow-sm);
       transform-style: preserve-3d;
     }
 
@@ -323,18 +405,11 @@
       z-index: 2;
     }
 
-    .card-img-container {
-      width: 100%;
-      aspect-ratio: 2/3;
-      overflow: hidden;
-      position: relative;
-      border-bottom: 3px solid var(--border);
-    }
-
     .card-img {
       width: 100%;
-      height: 100%;
+      height: 300px;
       object-fit: cover;
+      border-bottom: 3px solid var(--border);
       transition: transform 0.3s ease;
     }
 
@@ -398,7 +473,6 @@
       font-size: 15px;
       text-transform: uppercase;
       letter-spacing: -0.5px;
-      box-shadow: var(--shadow-sm);
     }
 
     .pagination button:hover:not(:disabled) {
@@ -422,7 +496,6 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      box-shadow: var(--shadow-sm);
     }
 
     .page-indicator .current-page {
@@ -457,7 +530,6 @@
       background: var(--secondary);
       border: 3px solid var(--border);
       padding: 30px;
-      box-shadow: var(--shadow);
       position: relative;
     }
 
@@ -484,7 +556,6 @@
     .detail-poster {
       width: 300px;
       border: 3px solid var(--border);
-      box-shadow: var(--shadow);
       flex-shrink: 0;
     }
 
@@ -576,7 +647,6 @@
     .video-container {
       margin-bottom: 40px;
       border: 3px solid var(--border);
-      box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
     }
@@ -618,7 +688,6 @@
       min-width: 150px;
       transition: var(--transition);
       font-weight: 700;
-      box-shadow: var(--shadow-sm);
     }
 
     .quality-selector:hover {
@@ -667,7 +736,6 @@
       cursor: pointer;
       transition: var(--transition);
       font-size: 16px;
-      box-shadow: var(--shadow-sm);
     }
 
     .episode-btn:hover:not(:disabled) {
@@ -697,7 +765,6 @@
       background: var(--secondary);
       border: 3px solid var(--border);
       padding: 30px;
-      box-shadow: var(--shadow);
       margin-bottom: 40px;
       position: relative;
     }
@@ -755,7 +822,6 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: -0.5px;
-      box-shadow: var(--shadow-sm);
     }
 
     .episode-btn-list:hover {
@@ -767,7 +833,6 @@
     .episode-btn-list.active {
       background: var(--accent);
       color: var(--secondary);
-      box-shadow: var(--shadow);
       position: relative;
     }
 
@@ -795,7 +860,6 @@
       font-size: 15px;
       text-transform: uppercase;
       letter-spacing: -0.5px;
-      box-shadow: var(--shadow-sm);
     }
 
     .back-btn:hover {
@@ -862,7 +926,7 @@
     }
 
     /* Modal Ketentuan */
-    .modal-overlay {
+    .terms-modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
@@ -872,7 +936,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 2000;
+      z-index: 4000;
       padding: 20px;
       animation: fadeIn 0.3s ease-out;
     }
@@ -882,7 +946,7 @@
       to { opacity: 1; }
     }
 
-    .modal-content {
+    .terms-modal-content {
       background: var(--secondary);
       border: 3px solid var(--border);
       padding: 40px;
@@ -895,7 +959,7 @@
       animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .modal-header {
+    .terms-modal-header {
       margin-bottom: 30px;
       text-align: center;
       position: relative;
@@ -963,7 +1027,7 @@
       font-weight: 700;
     }
 
-    .modal-footer {
+    .terms-modal-footer {
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -1000,12 +1064,12 @@
       font-weight: 700;
     }
 
-    .modal-actions {
+    .terms-modal-actions {
       display: flex;
       gap: 15px;
     }
 
-    .modal-btn {
+    .terms-modal-btn {
       flex: 1;
       padding: 16px;
       border-radius: 0;
@@ -1018,24 +1082,22 @@
       letter-spacing: -0.5px;
     }
 
-    .modal-btn.accept {
+    .terms-modal-btn.accept {
       background: var(--accent);
       color: var(--secondary);
-      box-shadow: var(--shadow-sm);
     }
 
-    .modal-btn.accept:hover {
+    .terms-modal-btn.accept:hover {
       transform: translate(-3px, -3px);
       box-shadow: 6px 6px 0px var(--border);
     }
 
-    .modal-btn.cancel {
+    .terms-modal-btn.cancel {
       background: var(--secondary);
       color: var(--primary);
-      box-shadow: var(--shadow-sm);
     }
 
-    .modal-btn.cancel:hover {
+    .terms-modal-btn.cancel:hover {
       background: var(--highlight);
       transform: translate(-3px, -3px);
       box-shadow: 6px 6px 0px var(--border);
@@ -1131,15 +1193,22 @@
         margin: 0;
       }
       
-      .nav-buttons {
-        order: 2;
-        flex: 1;
-        justify-content: flex-start;
+      /* Desktop Mode untuk Sidebar */
+      .sidebar {
+        transform: translateX(0);
+      }
+
+      .menu-btn {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 260px;
       }
     }
 
     @media (max-width: 768px) {
-      .modal-content {
+      .terms-modal-content {
         padding: 25px;
       }
       
@@ -1147,7 +1216,7 @@
         font-size: 24px;
       }
       
-      .modal-actions {
+      .terms-modal-actions {
         flex-direction: column;
       }
       
@@ -1176,6 +1245,19 @@
         width: 90%;
         max-width: 300px;
         text-align: center;
+      }
+
+      /* Mobile mode untuk Sidebar */
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .menu-btn {
+        display: flex;
+      }
+
+      .main-content {
+        margin-left: 0;
       }
     }
 
@@ -1214,10 +1296,27 @@
 <script type="text/babel">
 const { useState, useEffect, useRef, useMemo } = React;
 
+// ==================== UTILITY FUNCTIONS ====================
 function getCover(d) {
   return d.coverWap || d.cover || d.bookCover || d.coverUrl || "";
 }
 
+// ==================== HISTORY HELPER ====================
+const HISTORY_KEY = "dramakuy_history";
+
+function loadHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(list) {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+}
+
+// ==================== MAIN APP ====================
 function App() {
   const [section, setSection] = useState("trending");
   const [page, setPage] = useState(1);
@@ -1235,20 +1334,19 @@ function App() {
   const [currentQuality, setCurrentQuality] = useState(720);
   const [toast, setToast] = useState("");
   
+  // ==================== STATE BARU ====================
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [showResume, setShowResume] = useState(null);
+  
   const videoRef = useRef();
-  const lastTimeRef = useRef(0);
   const cacheRef = useRef({});
 
-  function showToast(msg) {
-    setToast(msg);
-    setTimeout(() => setToast(""), 2000);
-  }
-
+  // ==================== INITIAL LOAD ====================
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [section, page]);
-
-  useEffect(() => {
+    // Load history saat app start
+    setHistory(loadHistory());
+    
     const savedTerms = localStorage.getItem('dramakuy_terms_accepted');
     if (!savedTerms) {
       setTimeout(() => {
@@ -1262,6 +1360,47 @@ function App() {
       setCurrentQuality(Number(savedQuality));
     }
   }, []);
+
+  // ==================== AUTO SAVE HISTORY ====================
+  useEffect(() => {
+    if (!videoRef.current || !selected || !episodes.length) return;
+
+    const video = videoRef.current;
+    let lastSave = 0;
+
+    const save = () => {
+      const now = Date.now();
+      if (now - lastSave < 5000) return; // throttle 5 detik
+      lastSave = now;
+
+      const item = {
+        bookId: selected.bookId,
+        bookName: selected.bookName,
+        cover: getCover(selected),
+        episodeIndex: currentEp,
+        episodeNumber: currentEp + 1,
+        currentTime: video.currentTime,
+        duration: video.duration || 0,
+        lastWatchedAt: Date.now()
+      };
+
+      setHistory(prev => {
+        const filtered = prev.filter(h => h.bookId !== item.bookId);
+        const updated = [item, ...filtered];
+        saveHistory(updated);
+        return updated;
+      });
+    };
+
+    video.addEventListener("timeupdate", save);
+    return () => video.removeEventListener("timeupdate", save);
+  }, [selected, currentEp, episodes]);
+
+  // ==================== HELPER FUNCTIONS ====================
+  function showToast(msg) {
+    setToast(msg);
+    setTimeout(() => setToast(""), 2000);
+  }
 
   useEffect(() => {
     localStorage.setItem('dramakuy_preferred_quality', preferredQuality.toString());
@@ -1278,7 +1417,6 @@ function App() {
     setLoading(true);
     setSelected(null);
 
-    // PERUBAHAN: Ganti endpoint dengan /api/
     fetch(`/api/${section}?page=${page}`)
       .then(r => r.json())
       .then(j => {
@@ -1297,7 +1435,6 @@ function App() {
     if (!query) return;
     setLoading(true);
     setPage(1);
-    // PERUBAHAN: Ganti endpoint dengan /api/
     fetch(`/api/search?query=${encodeURIComponent(query)}&page=1`)
       .then(r => r.json())
       .then(j => {
@@ -1309,16 +1446,24 @@ function App() {
   }
 
   function openDetail(d) {
+    // Cek history untuk resume
+    const hist = history.find(h => h.bookId === d.bookId);
+    
     setSelected(d);
     setEpisodes([]);
     setVideoSrc("");
 
-    // PERUBAHAN: Ganti endpoint dengan /api/
     fetch(`/api/allepisode?bookId=${d.bookId}`)
       .then(r => r.json())
       .then(j => {
         setEpisodes(j.data || []);
-        if (j.data?.length) playEpisode(j.data, 0);
+        
+        // Jika ada history, tampilkan modal resume dan STOP di sini
+        if (hist) {
+          setShowResume(hist);
+        } else {
+          playEpisode(j.data, 0);
+        }
       });
   }
 
@@ -1337,8 +1482,6 @@ function App() {
 
     setVideoSrc(video.videoPath);
     setCurrentQuality(video.quality);
-    
-    lastTimeRef.current = 0;
     
     if (videoRef.current) {
       videoRef.current.pause();
@@ -1418,10 +1561,11 @@ function App() {
 
   return (
     <>
+      {/* Terms Modal */}
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
+        <div className="terms-modal-overlay">
+          <div className="terms-modal-content">
+            <div className="terms-modal-header">
               <h2 className="modal-title">
                 <i className="fas fa-exclamation-triangle"></i>
                 Ketentuan Penggunaan
@@ -1461,7 +1605,7 @@ function App() {
               </div>
             </div>
             
-            <div className="modal-footer">
+            <div className="terms-modal-footer">
               <div className="checkbox-container" onClick={() => setDontShowAgain(!dontShowAgain)}>
                 <input 
                   type="checkbox" 
@@ -1474,11 +1618,11 @@ function App() {
                 </label>
               </div>
               
-              <div className="modal-actions">
-                <button className="modal-btn cancel" onClick={handleCancel}>
+              <div className="terms-modal-actions">
+                <button className="terms-modal-btn cancel" onClick={handleCancel}>
                   Batal
                 </button>
-                <button className="modal-btn accept" onClick={handleAcceptTerms}>
+                <button className="terms-modal-btn accept" onClick={handleAcceptTerms}>
                   Setuju & Lanjutkan
                 </button>
               </div>
@@ -1487,27 +1631,59 @@ function App() {
         </div>
       )}
 
+      {/* Resume Modal */}
+      {showResume && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Lanjutkan tontonan?</h2>
+            <p>
+              Episode {showResume.episodeNumber}  
+              - Menit {Math.floor(showResume.currentTime / 60)}:
+              {Math.floor(showResume.currentTime % 60).toString().padStart(2,"0")}
+            </p>
+
+            <button
+              className="modal-btn accept"
+              onClick={() => {
+                // Play episode dari history dan set waktu
+                playEpisode(episodes, showResume.episodeIndex);
+                setTimeout(() => {
+                  if (videoRef.current) {
+                    videoRef.current.currentTime = showResume.currentTime;
+                  }
+                }, 300);
+                setShowResume(null);
+              }}
+            >
+              LANJUTKAN
+            </button>
+
+            <button
+              className="modal-btn cancel"
+              onClick={() => {
+                // Mulai dari awal (episode 1)
+                playEpisode(episodes, 0);
+                setShowResume(null);
+              }}
+            >
+              MULAI ULANG
+            </button>
+          </div>
+        </div>
+      )}
+
       <header>
         <div className="header-container">
+          <button
+            className="menu-btn"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <i className="fas fa-bars"></i>
+          </button>
+
           <div className="logo">
             <i className="fas fa-play"></i>
             DRAMAKUY
-          </div>
-          
-          <div className="nav-buttons">
-            {["trending","foryou","vip","latest","dubindo"].map(s => (
-              <button 
-                key={s} 
-                className={`nav-btn ${section === s ? 'active' : ''}`}
-                onClick={() => {
-                  setSection(s); 
-                  setPage(1);
-                  showToast(`Membuka ${sectionNames[s]}`);
-                }}
-              >
-                {sectionNames[s]}
-              </button>
-            ))}
           </div>
           
           <div className="search-container">
@@ -1525,81 +1701,229 @@ function App() {
         </div>
       </header>
 
+      {/* Sidebar */}
+      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+        <div className="sidebar-header">
+          <span>MENU</span>
+          <button onClick={() => setSidebarOpen(false)}>✕</button>
+        </div>
+
+        {[
+          ["trending", "🔥 Trending"],
+          ["foryou", "✨ Untuk Kamu"],
+          ["vip", "💎 VIP"],
+          ["latest", "🆕 Terbaru"],
+          ["dubindo", "🇮🇩 Dub Indo"],
+        ].map(([key, label]) => (
+          <button
+            key={key}
+            className={`sidebar-item ${section === key ? "active" : ""}`}
+            onClick={() => {
+              setSection(key);
+              setPage(1);
+              setSelected(null);
+              setSidebarOpen(false);
+              showToast(`Membuka ${label}`);
+            }}
+          >
+            {label}
+          </button>
+        ))}
+
+        <button
+          className={`sidebar-item ${section === "history" ? "active" : ""}`}
+          onClick={() => {
+            setSection("history");
+            setSelected(null);
+            setSidebarOpen(false);
+          }}
+        >
+          🕒 Riwayat
+        </button>
+      </div>
+
       <div className="main-content">
         {!selected ? (
           <>
-            <h2 className="section-title">
-              {section === "trending" ? (
-                "🔥 Trending Sekarang"
-              ) : (
-                <>
-                  {sectionNames[section]} <span className="highlight">Drama</span>
-                </>
-              )}
-            </h2>
-            
-            <div className="grid">
-              {!loading && list.map((d, index) => (
-                <div className="card" key={d.bookId} onClick={() => openDetail(d)}>
-                  <div className="card-img-container">
-                    <img className="card-img" src={getCover(d)} alt={d.bookName} />
+            {section === "history" ? (
+              <>
+                <h2 className="section-title">Riwayat Tontonan</h2>
+
+                {history.length === 0 && <p style={{textAlign: "center", padding: "50px", opacity: 0.7}}>Belum ada tontonan</p>}
+
+                <div className="grid">
+                  {history.map(h => {
+                    // FIX BUG #3: Handle duration === 0
+                    const progress = h.duration ? (h.currentTime / h.duration) * 100 : 0;
+                    
+                    return (
+                      <div className="card" key={h.bookId}>
+                        <img className="card-img" src={h.cover} alt={h.bookName} />
+                        <div className="card-content">
+                          <div className="card-title">{h.bookName}</div>
+                          <div style={{fontSize:12, marginBottom: 5}}>
+                            Episode {h.episodeNumber}
+                          </div>
+
+                          <div style={{height:6, background:"#000", marginBottom: 8}}>
+                            <div
+                              style={{
+                                height: "100%",
+                                width: `${progress}%`,
+                                background: "var(--accent)"
+                              }}
+                            />
+                          </div>
+
+                          <button
+                            style={{
+                              width: "100%",
+                              padding: "8px",
+                              marginBottom: "5px",
+                              background: "var(--accent)",
+                              color: "white",
+                              border: "2px solid var(--border)",
+                              cursor: "pointer"
+                            }}
+                            onClick={() => {
+                              // Cari drama di list untuk openDetail
+                              const drama = list.find(d => d.bookId === h.bookId);
+                              if (drama) {
+                                openDetail(drama);
+                              } else {
+                                // Jika tidak ada di list saat ini, buat objek dummy
+                                openDetail({
+                                  bookId: h.bookId,
+                                  bookName: h.bookName,
+                                  coverWap: h.cover
+                                });
+                              }
+                            }}
+                          >
+                            LANJUTKAN
+                          </button>
+
+                          <button
+                            style={{
+                              width: "100%",
+                              padding: "8px",
+                              background: "transparent",
+                              border: "2px solid var(--border)",
+                              cursor: "pointer"
+                            }}
+                            onClick={() => {
+                              const filtered = history.filter(x => x.bookId !== h.bookId);
+                              setHistory(filtered);
+                              saveHistory(filtered);
+                              showToast("Riwayat dihapus");
+                            }}
+                          >
+                            ❌ HAPUS
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {history.length > 0 && (
+                  <div style={{textAlign: "center", marginTop: "30px"}}>
+                    <button
+                      style={{
+                        padding: "12px 24px",
+                        background: "var(--accent)",
+                        color: "white",
+                        border: "3px solid var(--border)",
+                        fontWeight: "700",
+                        cursor: "pointer"
+                      }}
+                      onClick={() => {
+                        setHistory([]);
+                        saveHistory([]);
+                        showToast("Semua riwayat dihapus");
+                      }}
+                    >
+                      🗑️ Hapus Semua
+                    </button>
                   </div>
-                  <div className="card-content">
-                    <div className="card-title">{d.bookName}</div>
-                    <div className="card-meta">
-                      <span>Drama</span>
-                      <span className="card-rating">
-                        <i className="fas fa-star"></i> {d.rating || "8.5"}
-                      </span>
+                )}
+              </>
+            ) : (
+              <>
+                <h2 className="section-title">
+                  {section === "trending" ? (
+                    "🔥 Trending Sekarang"
+                  ) : (
+                    <>
+                      {sectionNames[section]} <span className="highlight">Drama</span>
+                    </>
+                  )}
+                </h2>
+                
+                <div className="grid">
+                  {!loading && list.map((d, index) => (
+                    <div className="card" key={d.bookId} onClick={() => openDetail(d)}>
+                      <div style={{width: "100%", aspectRatio: "2/3", overflow: "hidden"}}>
+                        <img className="card-img" src={getCover(d)} alt={d.bookName} style={{width: "100%", height: "100%", objectFit: "cover"}} />
+                      </div>
+                      <div className="card-content">
+                        <div className="card-title">{d.bookName}</div>
+                        <div className="card-meta">
+                          <span>Drama</span>
+                          <span className="card-rating">
+                            <i className="fas fa-star"></i> {d.rating || "8.5"}
+                          </span>
+                        </div>
+                      </div>
                     </div>
+                  ))}
+                </div>
+
+                {section !== "trending" && (
+                  <div className="pagination">
+                    <button
+                      onClick={() => {
+                        if (page > 1) {
+                          setPage(page - 1);
+                          showToast(`Halaman ${page - 1}`);
+                        }
+                      }}
+                      disabled={page === 1 || loading}
+                    >
+                      <i className="fas fa-chevron-left"></i> Sebelumnya
+                    </button>
+
+                    <div className="page-indicator">
+                      Halaman <span className="current-page">{page}</span>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setPage(page + 1);
+                        showToast(`Halaman ${page + 1}`);
+                      }}
+                      disabled={loading}
+                    >
+                      Selanjutnya <i className="fas fa-chevron-right"></i>
+                    </button>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            {section !== "trending" && (
-              <div className="pagination">
-                <button
-                  onClick={() => {
-                    if (page > 1) {
-                      setPage(page - 1);
-                      showToast(`Halaman ${page - 1}`);
-                    }
-                  }}
-                  disabled={page === 1 || loading}
-                >
-                  <i className="fas fa-chevron-left"></i> Sebelumnya
-                </button>
-
-                <div className="page-indicator">
-                  Halaman <span className="current-page">{page}</span>
-                </div>
-
-                <button
-                  onClick={() => {
-                    setPage(page + 1);
-                    showToast(`Halaman ${page + 1}`);
-                  }}
-                  disabled={loading}
-                >
-                  Selanjutnya <i className="fas fa-chevron-right"></i>
-                </button>
-              </div>
-            )}
-            
-            {loading && (
-              <div style={{textAlign: "center", padding: "50px"}}>
-                <div className="loading" style={{margin: "0 auto"}}></div>
-                <p style={{marginTop: "15px", opacity: 0.7, fontWeight: 700}}>Memuat drama...</p>
-              </div>
-            )}
-            
-            {!loading && list.length === 0 && (
-              <div style={{textAlign: "center", padding: "50px", opacity: 0.7}}>
-                <i className="fas fa-film" style={{fontSize: "50px", marginBottom: "20px", opacity: 0.5}}></i>
-                <h3 style={{marginBottom: "10px", fontWeight: 900}}>Tidak ada drama ditemukan</h3>
-                <p style={{fontWeight: 500}}>Coba cari dengan kata kunci yang berbeda</p>
-              </div>
+                )}
+                
+                {loading && (
+                  <div style={{textAlign: "center", padding: "50px"}}>
+                    <div className="loading" style={{margin: "0 auto"}}></div>
+                    <p style={{marginTop: "15px", opacity: 0.7, fontWeight: 700}}>Memuat drama...</p>
+                  </div>
+                )}
+                
+                {!loading && list.length === 0 && (
+                  <div style={{textAlign: "center", padding: "50px", opacity: 0.7}}>
+                    <i className="fas fa-film" style={{fontSize: "50px", marginBottom: "20px", opacity: 0.5}}></i>
+                    <h3 style={{marginBottom: "10px", fontWeight: 900}}>Tidak ada drama ditemukan</h3>
+                    <p style={{fontWeight: 500}}>Coba cari dengan kata kunci yang berbeda</p>
+                  </div>
+                )}
+              </>
             )}
           </>
         ) : (
@@ -1649,11 +1973,7 @@ function App() {
                 playsInline
                 preload="metadata"
                 onEnded={nextEpisode}
-                onTimeUpdate={() => {
-                  if (videoRef.current) {
-                    lastTimeRef.current = videoRef.current.currentTime;
-                  }
-                }}
+                // FIX BUG #2: Hapus onTimeUpdate yang redundan
                 style={{width: "100%", display: "block"}}
               />
               
